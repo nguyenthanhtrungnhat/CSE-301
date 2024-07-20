@@ -36,13 +36,32 @@ projectID int,
 workingHour float ,
 primary key( employeeID,projectID)
 );
-
+create table RELATIVE(
+employeeID varchar(3) ,
+relativeName varchar(50),
+gender varchar(5) NOT NULL,
+date0fBirth date,
+relationship varchar(30) NOT NULL,
+primary key(employeeID,relativeName)
+);
 -- Add foreign key constraint to EMPLOYEES table
 ALTER TABLE EMPLOYEES
 ADD  FOREIGN KEY (managerID) REFERENCES EMPLOYEES(employeeID),
 ADD  FOREIGN KEY (departmentID) REFERENCES DEPARTMENT(departmentID);
 
--- Add foreign key constraint to DEPARTMENT table
 ALTER TABLE DEPARTMENT
 ADD FOREIGN KEY (managerID) REFERENCES EMPLOYEES(employeeID);
 #alter table EMPLOYEES drop foreign key ;
+
+ALTER TABLE DEPARTMENTADDRESS
+ADD  FOREIGN KEY (departmentID) REFERENCES DEPARTMENT(departmentID);
+
+ALTER TABLE PROJECTS
+ADD  FOREIGN KEY (departmentID) REFERENCES DEPARTMENT(departmentID);
+
+ALTER TABLE ASSIGNMENT
+ADD  FOREIGN KEY (employeeID) REFERENCES EMPLOYEES(employeeID),
+ADD  FOREIGN KEY (projectID) REFERENCES PROJECTS(projectID);
+
+ALTER TABLE RELATIVE
+ADD  FOREIGN KEY (employeeID) REFERENCES EMPLOYEES(employeeID);
