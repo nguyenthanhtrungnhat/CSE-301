@@ -8,7 +8,7 @@ City varchar(30),
 Pincode int not null,
 Province char(25),
 Amount_Paid decimal(15,4),
-Amount_Due decimal(15,4), check(Client_Number like '%'), primary key(Client_Number)
+Amount_Due decimal(15,4), check(Client_Number like 'C%'), primary key(Client_Number)
 );
 create table product(
 Product_Number varchar(15),
@@ -29,7 +29,7 @@ Salary decimal(15,4) not null,
 Sales_Target int not null,
 Target_Achieved int,
 Phone char(10) not null unique,
-check(Salesman_Number like '%'),
+check(Salesman_Number like 'S%'),
 check(Salary<>0),
 check (Sales_Target<>0),
 primary key(Salesman_Number)
@@ -44,7 +44,7 @@ Delivery_Date date,
 Order_Status varchar(15),
 primary key (Order_Number),
 foreign key (Client_Number) references clients (Client_Number),
-foreign key (Salesman_Number) references salesman (Salesman_Number), check (Order_Number like '0%'),
+foreign key (Salesman_Number) references salesman (Salesman_Number), check (Order_Number like 'O%'),
 check (Client_Number like 'C%'),
 check (Salesman_Number like 'S%'),
 check (Delivery_Status in ('Delivered', 'On Way', 'Ready to Ship')), check (Delivery_Date>Order_Date),
@@ -55,7 +55,7 @@ create table SalesOrderDetails(
 Order_Number varchar(15),
 Product_Number varchar(15),
 Order_Quantity int,
-check (order_number like '0%'), check (Product_Number like 'P%'),
+check (order_number like 'O%'), check (Product_Number like 'P%'),
 foreign key (Order_Number)
 references salesorder (Order_Number), foreign key (Product_Number)
 references product (Product_Number)
