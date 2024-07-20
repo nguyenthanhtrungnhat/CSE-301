@@ -124,5 +124,16 @@ insert into SalesOrderDetails values
 ('O20013','P1006',10),
 ('O20014','P1002',20);
 
+DESCRIBE Clients;
+DESCRIBE Product;
+DESCRIBE Salesman;
+DESCRIBE Salesorder;
+DESCRIBE Salesorderdetails;
+
+select * from Clients;
+select * from Product;
+select * from Salesman;
+select * from Salesorder;
+select * from Salesorderdetails;
 
 
