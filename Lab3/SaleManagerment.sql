@@ -46,10 +46,11 @@ primary key (Order_Number),
 foreign key (Client_Number) references clients (Client_Number),
 foreign key (Salesman_Number) references salesman (Salesman_Number), check (Order_Number like '0%'),
 check (Client_Number like 'C%'),
-check (Salesman_Number like '%'),
+check (Salesman_Number like 'S%'),
 check (Delivery_Status in ('Delivered', 'On Way', 'Ready to Ship')), check (Delivery_Date>Order_Date),
 check (Order_Status in ('In Process', 'Successful', 'Cancelled'))
 );
+
 create table SalesOrderDetails(
 Order_Number varchar(15),
 Product_Number varchar(15),
@@ -86,8 +87,8 @@ insert into `Salesman` values
 ('S004','Tien','Phu Hoa','Dai An',700023,'Binh Duong',16500,70,72,'0908654723'),
 ('S005','Deb','Hoa Phu','Thu Dau Mot',700051,'Binh Duong',13500,60,48,'0903213659'),
 ('S006','Tin','Chanh My','Da Lat',700032,'Lam Dong',20000,80,55,'0907853497');
-insert into SalesOrder (order_number,order_date, client_number, salesman_number,delivery_status, delivery_date,order_status)
-values('O20001','2022-01-15','C101','S003','Delivered','2022-02-10','Successful'),
+insert into SalesOrder values
+('O20001','2022-01-15','C101','S003','Delivered','2022-02-10','Successful'),
 ('O20002','2022-01-25','C102','S003','Delivered','2022-02-15','Cancelled'),
 ('O20003','2022-01-31','C103','S002','Delivered','2022-04-03','Successful'),
 ('O20004','2022-02-10','C104','S003','Delivered','2022-04-23','Successful'),
@@ -101,9 +102,6 @@ values('O20001','2022-01-15','C101','S003','Delivered','2022-02-10','Successful'
 ('O20012','2022-05-12','C108','S004','On Way',null,'Successful'),
 ('O20013','2022-05-16','C109','S001','Ready to Ship',null,'In Process'),
 ('O20014','2022-05-16','C110','S001','On Way',null,'Successful');
-select * from `SalesOrder`;
 
-
-select * from clients;
 
 
