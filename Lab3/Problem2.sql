@@ -18,6 +18,25 @@ departmentName varchar(10) not null,
 managerID varchar(3) ,
 date0fEmployment date NOT NULL
 );
+
+create table DEPARTMENTADDRESS(
+departmentID int ,
+address varchar(30),
+ PRIMARY KEY (departmentID,address)
+);
+create table PROJECTS(
+projectID int PRIMARY KEY,
+projectName varchar(30) NOT NULL,
+projectAddress varchar(100) NOT NULL,
+departmentID int
+); 
+create table ASSIGNMENT(
+employeeID varchar(3),
+projectID int,
+workingHour float ,
+primary key( employeeID,projectID)
+);
+
 -- Add foreign key constraint to EMPLOYEES table
 ALTER TABLE EMPLOYEES
 ADD  FOREIGN KEY (managerID) REFERENCES EMPLOYEES(employeeID),
@@ -26,4 +45,4 @@ ADD  FOREIGN KEY (departmentID) REFERENCES DEPARTMENT(departmentID);
 -- Add foreign key constraint to DEPARTMENT table
 ALTER TABLE DEPARTMENT
 ADD FOREIGN KEY (managerID) REFERENCES EMPLOYEES(employeeID);
-#alter table EMPLOYEES drop foreign key employees_ibfk_1;
+#alter table EMPLOYEES drop foreign key ;
