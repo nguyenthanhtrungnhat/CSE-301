@@ -72,9 +72,30 @@ having sum(order_quantity)>20;
 
 -- 9. Display the client information (client_number, client_name) and order number of those clients who
 -- have order status is cancelled.
-select 
+select clients.client_number, clients.client_name, salesorder.order_number 
+from clients
+inner join salesorder on clients.client_number = salesorder.client_number
+WHERE salesorder.order_status = 'cancelled';
+ 
 -- 10. Display client name, client number of clients C101 and count the number of orders which were
 -- received “successful”.
+select clients.client_number, clients.client_name, count(order_status="successful") as 'the number of orders which were received “successful”'
+from clients
+inner join salesorder on clients.client_number = salesorder.client_number
+where clients.client_number ='C101';
 -- 11. Count the number of clients orders placed for each product.
+select salesorderdetails.product_number, count(clients.client_number) as 'the number of clients orders placed for each product'
+from salesorderdetails
+inner join salesorder on salesorder.order_number = salesorderdetails.order_number
+inner join clients on clients.client_number = salesorder.client_number
+group by product_number;
+
 -- 12. Find product numbers that were ordered by more than two clients then order in descending by product
 -- number.
+select salesorderdetails.product_number 
+from salesorderdetails
+inner join salesorder on salesorder.order_number = salesorderdetails.order_number
+inner join clients on clients.client_number = salesorder.client_number
+group by product_number
+having count(distinct clients.client_number)> 2
+order by product_number desc;
