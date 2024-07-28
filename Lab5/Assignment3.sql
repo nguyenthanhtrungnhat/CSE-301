@@ -99,3 +99,57 @@ inner join clients on clients.client_number = salesorder.client_number
 group by product_number
 having count(distinct clients.client_number)> 2
 order by product_number desc;
+-- b) Using nested query with operator (IN, EXISTS, ANY and ALL)
+-- 13. Find the salesman’s names who is getting the second highest salary.
+select salesman_name
+from salesman
+order by salary desc
+limit 1
+offset 1;
+
+-- 14. Find the salesman’s names who is getting second lowest salary.
+select salesman_name
+from salesman
+where salary = (
+select distinct salary 
+from salesman
+order by salary
+limit 1
+offset 1);
+
+-- 15. Write a query to find the name and the salary of the salesman who have a higher salary than the
+-- salesman whose salesman number is S001.
+select salesman_name, salary
+from salesman
+where salary> (
+select salary 
+from salesman
+where salesman_number="S001"
+);
+
+-- 16. Write a query to find the name of all salesman who sold the product has number: P1002.
+select distinct salesman.salesman_name
+from salesman
+inner join salesorder on salesman.Salesman_Number= salesorder.Salesman_Number
+inner join salesorderdetails on salesorderdetails.Order_Number = salesorder.Order_Number
+where salesorderdetails.product_number="P1002";
+
+-- 17. Find the name of the salesman who sold the product to client C108 with delivery status is “delivered”.
+select*from salesorder;
+select  salesman.salesman_name
+from salesman
+inner join salesorder on salesman.Salesman_Number= salesorder.Salesman_Number
+where salesorder.client_number="P1002" and salesorder.delivery_status="delivered";
+-- 18. Display lists the ProductName in ANY records in the sale Order Details table has Order Quantity equal
+-- to 5.
+select product.product_name
+from product
+inner join salesorderdetails on salesorderdetails.Product_Number = product.Product_Number
+where salesorderdetails.Order_Quantity = 5;
+-- 19. Write a query to find the name and number of the salesman who sold pen or TV or laptop.
+-- 20. Lists the salesman’s name sold product with a product price less than 800 and Quantity_On_Hand
+-- more than 50.
+-- 21. Write a query to find the name and salary of the salesman whose salary is greater than the average
+-- salary.
+-- 22. Write a query to find the name and Amount Paid of the clients whose amount paid is greater than the
+-- average amount paid.
