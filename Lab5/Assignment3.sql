@@ -147,9 +147,40 @@ from product
 inner join salesorderdetails on salesorderdetails.Product_Number = product.Product_Number
 where salesorderdetails.Order_Quantity = 5;
 -- 19. Write a query to find the name and number of the salesman who sold pen or TV or laptop.
+select salesman.salesman_number, salesman.salesman_name
+From salesman
+Inner join salesorder on salesman.salesman_number = salesorder.salesman_number
+Inner join salesorderdetails on salesorder.order_number = salesorderdetails.order_number
+Inner join product on salesorderdetails.product_number = product.product_number
+Where product.product_name= 'tv' or product.product_name= 'laptop' or product.product_name= 'pen';
 -- 20. Lists the salesman’s name sold product with a product price less than 800 and Quantity_On_Hand
 -- more than 50.
+select salesman.salesman_name
+From salesman
+Inner join salesorder on salesman.salesman_number = salesorder.salesman_number
+Inner join salesorderdetails on salesorderdetails.order_number = salesorder.order_number
+Inner join product on salesorderdetails.product_number = product.product_number
+Where product.quantity_on_hand >50 and product.sell_price <800;
+
 -- 21. Write a query to find the name and salary of the salesman whose salary is greater than the average
 -- salary.
+select salesman.salesman_name, salesman.salary
+From salesman
+Where salesman.salary >(select avg(salesman.salary) from salesman);
+
 -- 22. Write a query to find the name and Amount Paid of the clients whose amount paid is greater than the
 -- average amount paid.
+Select clients.client_name, clients.amount_due
+From clients
+Where clients.amount_due>(
+select avg(clients.amount_due)
+From clients
+);
+-- 23. Find the product price that was sold to Le Xuan.
+Select product.sell_price
+From product
+Inner join salesorderdetails on salesorderdetails.product_number = product.product_number
+Inner join salesorder on salesorder.order_number = salesorderdetails.order_number
+Inner join clients on clients.client_number = salesorder.client_number
+Where clients.client_name = 'Le Xuan';
+
