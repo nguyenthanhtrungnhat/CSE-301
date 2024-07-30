@@ -184,3 +184,47 @@ Inner join salesorder on salesorder.order_number = salesorderdetails.order_numbe
 Inner join clients on clients.client_number = salesorder.client_number
 Where clients.client_name = 'Le Xuan';
 
+-- 24. Determine the product name, client name and amount due that was delivered.
+select product.product_name, clients.client_name, clients.amount_due
+from product 
+Inner join salesorderdetails on salesorderdetails.product_number = product.product_number
+Inner join salesorder on salesorder.order_number = salesorderdetails.order_number
+Inner join clients on clients.client_number = salesorder.client_number
+where delivery_status ='delivered';
+-- 25. Find the salesman’s name and their product name which is cancelled.
+select salesman.salesman_name, product.product_name
+from salesman
+inner join salesorder on salesman.salesman_number = salesorder.salesman_number
+Inner join salesorderdetails on salesorder.order_number = salesorderdetails.order_number
+Inner join product on salesorderdetails.product_number = product.product_number
+where salesorder.order_status='cancelled';
+
+-- 26. Find product names, prices and delivery status for those products purchased by Nguyen Thanh.
+SELECT product.product_name, product.sell_price, salesorder.delivery_status
+FROM product
+INNER JOIN salesorderdetails ON salesorderdetails.product_number = product.product_number
+INNER JOIN salesorder ON salesorder.order_number = salesorderdetails.order_number
+INNER JOIN clients ON clients.client_number = salesorder.client_number
+WHERE clients.client_name = 'Nguyen Thanh ';
+
+select * from clients;
+select * from salesorder;
+select*from salesorderdetails;
+select*from product;
+-- 27. Display the product name, sell price, salesperson name, delivery status, and order quantity information 
+-- for each customer.
+-- 28. Find the names, product names, and order dates of all sales staff whose product order status has been 
+-- successful but the items have not yet been delivered to the client.
+-- 29. Find each clients’ product which in on the way.
+-- 30. Find salary and the salesman’s names who is getting the highest salary.
+-- 31. Find salary and the salesman’s names who is getting second lowest salary.
+-- 32. Display lists the ProductName in ANY records in the sale Order Details table has Order Quantity more 
+-- than 9.
+-- 33. Find the name of the customer who ordered the same item multiple times.
+-- 34. Write a query to find the name, number and salary of the salemans who earns less than the average 
+-- salary and works in any of Thu Dau Mot city.
+-- 35. Write a query to find the name, number and salary of the salemans who earn a salary that is higher than 
+-- the salary of all the salesman have (Order_status = ‘Cancelled’). Sort the results of the salary of the lowest to 
+-- highest.
+-- 36. Write a query to find the 4th maximum salary on the salesman’s table.
+-- 37. Write a query to find the 3th minimum salary in the salesman’s table
