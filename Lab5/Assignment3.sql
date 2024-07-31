@@ -213,18 +213,72 @@ select*from salesorderdetails;
 select*from product;
 -- 27. Display the product name, sell price, salesperson name, delivery status, and order quantity information 
 -- for each customer.
+select c.Client_Name, p.Product_Name, p.Sell_Price, s.Salesman_Name, so.Delivery_Status, sod.Order_Quantity
+from clients c inner join salesorder so
+on c.Client_Number = so.Client_Number
+inner join salesman s
+on so.Salesman_Number = s.Salesman_Number
+inner join salesorderdetails sod
+on so.Order_Number = sod.Order_Number
+inner join product p
+on sod.Product_Number = p.Product_Number
+order by c.Client_Name;
 -- 28. Find the names, product names, and order dates of all sales staff whose product order status has been 
 -- successful but the items have not yet been delivered to the client.
+select s.Salesman_Name, p.Product_Name, so.Order_Date
+from salesman s inner join salesorder so
+on s.Salesman_Number = so.Salesman_Number
+inner join salesorderdetails sod
+on so.Order_Number = sod.Order_Number
+inner join product p
+on sod.Product_Number = p.Product_Number
+where so.Order_Status = 'Successful' and so.Delivery_Status <> 'Delivered';
 -- 29. Find each clients’ product which in on the way.
+select c.Client_Name, p.Product_Name, so.Delivery_Status
+from clients c inner join salesorder so
+on c.Client_Number = so.Client_Number
+inner join salesorderdetails sod
+on so.Order_Number = sod.Order_Number
+inner join product p
+on sod.Product_Number = p.Product_Number
+where so.Delivery_Status = 'On Way'
+order by c.Client_Name;
 -- 30. Find salary and the salesman’s names who is getting the highest salary.
+select salesman_name,salary from salesman where salary = (select max(salary) from salesman);
 -- 31. Find salary and the salesman’s names who is getting second lowest salary.
+select salesman_name, salary from salesman
+where salary = (select distinct salary from salesman order by salary limit 1 offset 1);
 -- 32. Display lists the ProductName in ANY records in the sale Order Details table has Order Quantity more 
 -- than 9.
+select p.Product_Name from product p
+where p.Product_Number = any
+(select sod.Product_Number from salesorderdetails sod
+where sod.Order_Quantity > 9);
 -- 33. Find the name of the customer who ordered the same item multiple times.
+select c.client_name, p.Product_Name, p.Product_Number from clients c
+inner join salesorder so
+on c.Client_Number = so.Client_Number
+inner join salesorderdetails sod
+on so.Order_Number = sod.Order_Number
+inner join product p
+on sod.Product_Number = p.Product_Number
+group by c.Client_Name, p.Product_Name, p.Product_Number
+having count(*) > 1;
 -- 34. Write a query to find the name, number and salary of the salemans who earns less than the average 
 -- salary and works in any of Thu Dau Mot city.
+select salesman_name, Salesman_Number, salary, city from salesman
+where
+city = 'Thu Dau Mot'
+and
+salary < (select avg(salary) from salesman);
 -- 35. Write a query to find the name, number and salary of the salemans who earn a salary that is higher than 
 -- the salary of all the salesman have (Order_status = ‘Cancelled’). Sort the results of the salary of the lowest to 
 -- highest.
+select salesman_name, Salesman_Number, salary from salesman
+where
+salary > (select max(salary) from salesman inner join salesorder on salesman.Salesman_Number = salesorder.Salesman_Number where salesorder.Order_Status = 'Cancelled')
+order by salary;
 -- 36. Write a query to find the 4th maximum salary on the salesman’s table.
+select distinct salary from salesman order by salary desc limit 1 offset 3;
 -- 37. Write a query to find the 3th minimum salary in the salesman’s table
+select distinct salary from salesman order by salary desc limit 1 offset 2;
