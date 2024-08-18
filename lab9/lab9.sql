@@ -223,13 +223,99 @@ AND da.address NOT LIKE '%TP HCM%';
  
 -- 23. Find the names and addresses of employees who work on a scheme in a city but the 
 -- department to which they belong is not located in that city.
--- 4
+
 -- 24. Create procedure List employee information by department with input data 
 -- departmentName.
+DELIMITER $$
+CREATE PROCEDURE ListEmployeesByDepartment(IN deptName VARCHAR(255))
+BEGIN
+    SELECT 
+        e.employeeID,
+        e.lastName,
+        e.middleName,
+        e.firstName,
+        e.dateOfBirth,
+        e.gender,
+        e.salary,
+        e.address,
+        e.managerID,
+        e.departmentID
+    FROM 
+        EMPLOYEES e
+    INNER JOIN 
+        DEPARTMENT d ON e.departmentID = d.departmentID
+    WHERE 
+        d.departmentName = deptName;
+END$$
+DELIMITER ;
+
 -- 25. Create a procedure to Search for projects that an employee participates in based on the 
 -- employee's last name (lastName).
+DELIMITER $$
+CREATE PROCEDURE SearchProjectsByLastName(IN empLastName VARCHAR(255))
+BEGIN
+    SELECT 
+        p.projectID,
+        p.projectName,
+        p.projectAddress,
+        p.departmentID
+    FROM 
+        EMPLOYEES e
+    INNER JOIN 
+        ASSIGNMENT a ON e.employeeID = a.employeeID
+    INNER JOIN 
+        PROJECTS p ON a.projectID = p.projectID
+    WHERE 
+        e.lastName = empLastName;
+END$$
+DELIMITER ;
+
 -- 26. Create a function to calculate the average salary of a department with input data 
 -- departmentID.
+DELIMITER $$
+
+CREATE FUNCTION CalculateAverageSalary(deptID INT)
+RETURNS DECIMAL(10,2)
+DETERMINISTIC
+READS SQL DATA
+BEGIN
+    DECLARE avgSalary DECIMAL(10,2);
+    
+    SELECT 
+        AVG(salary) INTO avgSalary
+    FROM 
+        EMPLOYEES
+    WHERE 
+        departmentID = deptID;
+    
+    RETURN avgSalary;
+END$$
+
+DELIMITER ;
+
+
 -- 27. Create a function to Check if an employee is involved in a particular project input data is 
 -- employeeID, projectID.
+DELIMITER $$
+
+CREATE FUNCTION IsEmployeeInProject(empID VARCHAR(3), projID INT)
+RETURNS BOOLEAN
+DETERMINISTIC
+READS SQL DATA
+BEGIN
+    DECLARE isInvolved BOOLEAN;
+    
+    SELECT 
+        COUNT(*)
+    INTO 
+        isInvolved
+    FROM 
+        ASSIGNMENT
+    WHERE 
+        employeeID = empID AND projectID = projID;
+    
+    RETURN isInvolved > 0;
+END$$
+
+DELIMITER ;
 
