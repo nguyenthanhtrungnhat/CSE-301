@@ -223,6 +223,21 @@ AND da.address NOT LIKE '%TP HCM%';
  
 -- 23. Find the names and addresses of employees who work on a scheme in a city but the 
 -- department to which they belong is not located in that city.
+SELECT distinct
+    e.lastName, 
+    e.middleName, 
+    e.firstName, 
+    e.address
+FROM 
+    EMPLOYEES e
+INNER JOIN 
+    ASSIGNMENT a ON e.employeeID = a.employeeID
+INNER JOIN 
+    PROJECTS p ON a.projectID = p.projectID
+INNER JOIN 
+    DEPARTMENTADDRESS da ON e.departmentID = da.departmentID
+WHERE 
+    p.projectAddress != da.address;
 
 -- 24. Create procedure List employee information by department with input data 
 -- departmentName.
